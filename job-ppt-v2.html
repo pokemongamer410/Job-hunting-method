@@ -497,6 +497,202 @@
       border-color: var(--text-dim);
     }
 
+    /* ====== MOBILE RWD: 手機切換成垂直滾動閱讀模式 ====== */
+    @media (max-width: 768px) {
+
+      /* 讓 body 恢復可滾動 */
+      body {
+        overflow-y: auto !important;
+        height: auto !important;
+        width: 100% !important;
+      }
+
+      /* 讓 slide-container 變成普通文件流 */
+      .slide-container {
+        width: 100% !important;
+        height: auto !important;
+        position: static !important;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding-bottom: 60px;
+        /* 留給 nav-bar */
+      }
+
+      /* 所有投影片都顯示、且平鋪成卡片 */
+      .slide {
+        position: static !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 36px 20px !important;
+        border-bottom: 1px solid var(--card-border);
+        transition: none !important;
+      }
+
+      /* 封面和章節頁保留視覺重量 */
+      .slide-title,
+      .slide-section {
+        padding: 48px 24px !important;
+        min-height: 220px !important;
+        justify-content: center;
+      }
+
+      .slide-title h1 {
+        font-size: 1.8rem !important;
+        margin-bottom: 16px !important;
+      }
+
+      .slide-title .subtitle {
+        font-size: 1rem !important;
+        margin-bottom: 24px !important;
+      }
+
+      .slide-section h2 {
+        font-size: 1.7rem !important;
+      }
+
+      .slide-section .icon {
+        width: 56px !important;
+        height: 56px !important;
+        margin-bottom: 14px !important;
+      }
+
+      /* 內容頁 wrapper 全寬 */
+      .content-wrapper {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+
+      /* 把 header 字縮小 */
+      .slide-header {
+        padding-bottom: 16px !important;
+        margin-bottom: 16px !important;
+        gap: 14px !important;
+      }
+
+      .slide-header .icon-wrap {
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 10px !important;
+      }
+
+      .slide-header .icon-wrap i {
+        width: 22px !important;
+        height: 22px !important;
+      }
+
+      .slide-header h3 {
+        font-size: 1.4rem !important;
+        line-height: 1.3 !important;
+      }
+
+      .slide-body {
+        gap: 16px !important;
+      }
+
+      /* 列表縮小字 */
+      .slide-list li {
+        font-size: 1rem !important;
+        gap: 12px !important;
+      }
+
+      .slide-list li::before {
+        margin-top: 9px !important;
+      }
+
+      /* 卡片類縮小 padding */
+      .info-box {
+        padding: 20px !important;
+      }
+
+      .info-box p {
+        font-size: 1.05rem !important;
+      }
+
+      .quote-card {
+        padding: 16px 20px !important;
+      }
+
+      .quote-card p {
+        font-size: 1rem !important;
+      }
+
+      /* 並排卡片改成垂直堆疊 */
+      .compare-row {
+        flex-direction: column !important;
+        gap: 16px !important;
+      }
+
+      .compare-card {
+        padding: 20px !important;
+      }
+
+      .compare-card p {
+        font-size: 1rem !important;
+      }
+
+      /* tip-card 縮小 */
+      .tip-card {
+        padding: 16px 20px !important;
+        gap: 16px !important;
+      }
+
+      .tip-card p {
+        font-size: 1rem !important;
+      }
+
+      .tip-card .icon-col {
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+      /* flow-row 改成垂直箭頭 */
+      .flow-row {
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 20px !important;
+        align-items: center;
+      }
+
+      .flow-arrow i {
+        transform: rotate(90deg) !important;
+        display: block !important;
+      }
+
+      .flow-item {
+        font-size: 1rem !important;
+        padding: 6px 0;
+      }
+
+      /* 隱藏 progress bar，改成 sticky 的小導覽 */
+      .progress-bar {
+        display: none !important;
+      }
+
+      /* Nav bar 縮小並固定在底部 */
+      .nav-bar {
+        padding: 12px 20px !important;
+        background: rgba(15, 17, 26, 0.97) !important;
+        border-top: 1px solid var(--card-border) !important;
+      }
+
+      /* 手機上不需要 prev/next：已是滾動模式，也可以保留 */
+      .nav-btn {
+        display: none !important;
+      }
+
+      .nav-bar .page-num {
+        font-size: 0.75rem !important;
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* ====== PRINT ====== */
     @media print {
       @page {
         size: 1600px 900px;
