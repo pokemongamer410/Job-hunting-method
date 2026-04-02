@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>求職分享會 — Anna</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet">
+  <!-- 載入 Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      /* 更明顯的高低對比背景，讓區塊浮現 */
+      --bg-dark: #0f111a;
+      --card-bg: #1e202d;
+      --card-border: #2a2d3e;
+
+      /* 全新主題色：專業科技藍綠色調 (Teal / Indigo) */
+      --accent: #2dd4bf;
+      --accent-light: #5eead4;
+      --accent-deep: #0f766e;
+
+      /* 點綴色 */
+      --highlight: #fbbf24;
+      --green: #10b981;
+      --red: #f43f5e;
+
+      /* 文字顏色 */
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-dim: #64748b;
+
+      /* 封面封底的漸層色 (維持你喜歡的感覺，但色系微調) */
+      --title-accent-1: #38bdf8;
+      --title-accent-2: #2dd4bf;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .slide-container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 60px 80px;
+      opacity: 0;
+      transform: translateX(60px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      background: var(--bg-dark);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide.exit-left {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+
+    /* Title & Section Slides */
+    .slide-title,
+    .slide-section {
+      text-align: center;
+      background: radial-gradient(ellipse at center, #1b1f33 0%, var(--bg-dark) 70%);
+    }
+
+    .slide-title h1 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1.3;
+      background: linear-gradient(135deg, var(--title-accent-1), var(--title-accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+
+    .slide-title .subtitle {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .speaker-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 40px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .speaker-badge .name {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .slide-section .part-label {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--accent);
+      margin-bottom: 16px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .slide-section h2 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.3;
+      color: var(--text-primary);
+    }
+
+    .slide-section .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px auto;
+      background: rgba(45, 212, 191, 0.1);
+      color: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* Content Slides */
+    .slide-content {
+      background: var(--bg-dark);
+      padding: 60px 80px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .content-wrapper {
+      width: 100%;
+      max-width: 1100px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-header {
+      width: 100%;
+      padding-bottom: 32px;
+      margin-bottom: 32px;
+      border-bottom: 2px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .slide-header .icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      color: var(--accent);
+    }
+
+    .slide-header .icon-wrap i {
+      width: 32px;
+      height: 32px;
+    }
+
+    .slide-header h3 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .slide-body {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    /* Typography & Components in Content Slide */
+    .slide-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .slide-list li {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .slide-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--accent);
+      margin-top: 13px;
+      opacity: 0.8;
+    }
+
+    .accent-text {
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    .highlight-text {
+      color: var(--highlight);
+      font-weight: 600;
+    }
+
+    .green-text {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    /* Business Cards */
+    .info-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 32px 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .info-box.centered {
+      text-align: center;
+    }
+
+    .info-box p {
+      font-size: 1.4rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .quote-card {
+      border-left: 4px solid var(--accent);
+      padding: 24px 32px;
+      background: var(--card-bg);
+      border-radius: 0 12px 12px 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .quote-card p {
+      font-size: 1.3rem;
+      font-style: normal;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .quote-card .attribution {
+      font-size: 1rem;
+      color: var(--text-dim);
+      margin-top: 16px;
+    }
+
+    .compare-row {
+      display: flex;
+      gap: 32px;
+      width: 100%;
+    }
+
+    .compare-card {
+      flex: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Top accent line for compare cards */
+    .compare-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+    }
+
+    .compare-card.bad::before {
+      background: var(--red);
+    }
+
+    .compare-card.good::before {
+      background: var(--green);
+    }
+
+    .compare-card.primary::before {
+      background: var(--accent);
+    }
+
+    .compare-card.warn::before {
+      background: var(--highlight);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+
+    .badge.bad {
+      background: rgba(244, 63, 94, 0.1);
+      color: var(--red);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+    }
+
+    .badge.good {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .badge.primary {
+      background: rgba(45, 212, 191, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(45, 212, 191, 0.2);
+    }
+
+    .badge.warn {
+      background: rgba(251, 191, 36, 0.1);
+      color: var(--highlight);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+    }
+
+    .compare-card p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    .compare-card .sub-text {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      margin-top: 16px;
+      display: block;
+    }
+
+    /* Tips */
+    .tip-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px 32px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .tip-card .icon-col {
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.05);
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
+
+    .tip-card .text-col {
+      flex: 1;
+    }
+
+    .tip-card .tip-label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .tip-card.warn .icon-col {
+      color: var(--highlight);
+      background: rgba(251, 191, 36, 0.1);
+    }
+
+    .tip-card p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .tip-card p strong {
+      color: var(--text-primary);
+    }
+
+    /* Flow */
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px 32px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .flow-item {
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .flow-arrow {
+      color: var(--accent-deep);
+    }
+
+    /* Nav */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background: linear-gradient(transparent, rgba(15, 17, 26, 0.95));
+      z-index: 100;
+    }
+
+    .nav-bar .page-num {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--title-accent-1);
+      transition: width 0.4s ease;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: var(--card-bg);
+      color: white;
+      border-color: var(--text-dim);
+    }
+
+    @media (max-width: 768px) {
+      .slide {
+        padding: 40px 28px;
+      }
+
+      .slide-title h1 {
+        font-size: 2rem;
+      }
+
+      .slide-section h2 {
+        font-size: 1.8rem;
+      }
+
+      .compare-row {
+        flex-direction: column;
+      }
+
+      .flow-row {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .flow-arrow i {
+        transform: rotate(90deg);
+      }
+    }
+
+    /* Add support for printing to PDF */
+    @media print {
+      @page {
+        size: 1600px 900px;
+        /* 16:9 aspect ratio */
+        margin: 0;
+      }
+
+      body {
+        background: var(--bg-dark) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        overflow: visible !important;
+        height: auto !important;
+      }
+
+      .slide-container {
+        height: auto !important;
+        overflow: visible !important;
+      }
+
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
+        height: 900px !important;
+        width: 1600px !important;
+      }
+
+      .nav-bar,
+      .progress-bar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-bar" id="progress"></div>
+
+  <div class="slide-container" id="slideContainer">
+
+    <!-- Slide 0: Title -->
+    <div class="slide slide-title active" data-index="0">
+      <h1>我怎麼在求職市場裡<br>把自己整理成市場更願意買單的人</h1>
+      <p class="subtitle">一場關於求職表達力與市場判讀力的跨職種分享</p>
+      <div class="speaker-badge">
+        <span class="name">Anna</span> · 產品經理
+      </div>
+    </div>
+
+    <!-- Slide 1: Part 1 Section -->
+    <div class="slide slide-section" data-index="1">
+      <div class="icon"><i data-lucide="clock" width="40" height="40"></i></div>
+      <div class="part-label">Part 1</div>
+      <h2>開場：我也焦慮過</h2>
+    </div>
+
+    <!-- Slide 2: Part 1 Content -->
+    <div class="slide slide-content" data-index="2">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="clock"></i></div>
+          <h3>我也焦慮過</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li>每天打開 104 就開始焦慮。看到有人更年輕賺更多，就忍不住開始比。</li>
+            <li>後來看清楚：<span class="accent-text">我不是最頂端，但也不是在底層打轉</span>。不需要跟最頂部的樣本硬比。</li>
+          </ul>
+          <div class="info-box centered">
+            <p>「很多人其實不是輸在能力，而是輸在沒辦法讓市場看懂自己的價值。」</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Part 2 Section -->
+    <div class="slide slide-section" data-index="3">
+      <div class="icon"><i data-lucide="lightbulb" width="40" height="40"></i></div>
+      <div class="part-label">Part 2</div>
+      <h2>薪水到底怎麼來的？</h2>
+    </div>
+
+    <!-- Slide 4: Part 2 Content A -->
+    <div class="slide slide-content" data-index="4">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="lightbulb"></i></div>
+          <h3>高薪的兩種來源</h3>
+        </div>
+        <div class="slide-body">
+          <div class="compare-row">
+            <div class="compare-card good">
+              <span class="badge good"><i data-lucide="building-2" width="16" height="16"></i> 公司印鈔機</span>
+              <p>公司本身就很賺錢，普通職位薪水也比別人高。</p>
+              <span class="sub-text">例：特許金融業、大型科技業</span>
+            </div>
+            <div class="compare-card primary">
+              <span class="badge primary"><i বিজ্ঞানীরা-lucide="gem" width="16" height="16"></i> 稀缺 × 高價值</span>
+              <p>職位本身稀缺，商業價值又高。</p>
+              <span class="sub-text">會的人少，但公司很需要</span>
+            </div>
+          </div>
+          <div class="info-box centered">
+            <p>學歷、年資是判斷素材，但 <span class="highlight-text">不直接等於你的價格</span><br>追根究底，一切都回歸：你能帶來多少商業價值</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Part 2 Content B -->
+    <div class="slide slide-content" data-index="5">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="rocket"></i></div>
+          <h3>舞台 + 撐過挑戰 = 最大的跳板</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li><strong>TPI 給了我舞台</strong>——金融模型、AI Coach 都是很難的挑戰。<br>外面不會把這些題目交給當時的小 PM。</li>
+            <li><strong>助教經歷</strong>：從純研究跳來什麼都做的地方。<br>一開始被電得歪七扭八，但撐過來後實戰經驗完全不同。</li>
+          </ul>
+          <div class="tip-card warn">
+            <div class="icon-col"><i data-lucide="alert-triangle"></i></div>
+            <div class="text-col">
+              <div class="tip-label">早期避坑</div>
+              <p>為了追眼前薪水去當小螺絲釘，萬一不喜歡那環境就死局了。<br><strong>因為你沒有靠核心技能持續談更高薪水、繼續跳的能力。</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Part 3 Section -->
+    <div class="slide slide-section" data-index="6">
+      <div class="icon"><i data-lucide="compass" width="40" height="40"></i></div>
+      <div class="part-label">Part 3</div>
+      <h2>你這次求職要買什麼？</h2>
+    </div>
+
+    <!-- Slide 7: Part 3 Content -->
+    <div class="slide slide-content" data-index="7">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="compass"></i></div>
+          <h3>跳板不是妥協，是主動投資</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li>你在乎的是 <span class="accent-text">舞台？薪水？技術深度？生活品質？</span><br>不是只能選一個，但你得有排序。</li>
+            <li>如果你很清楚要在那裡買到什麼 → 那就是投資，不是妥協。</li>
+            <li>如果還在累積戰績的階段——<br>要買的可能不是更高月薪，而是<span class="highlight-text">讓履歷脫胎換骨的經歷。</span></li>
+          </ul>
+          <div class="quote-card">
+            <p>「我這次為了長期職涯跟薪資結構，選擇忍受通勤距離很遠。<br>那是我想清楚之後的 trade-off。」</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Part 4 Section -->
+    <div class="slide slide-section" data-index="8">
+      <div class="icon"><i data-lucide="file-text" width="40" height="40"></i></div>
+      <div class="part-label">Part 4</div>
+      <h2>履歷與面試：都在做同一件事</h2>
+    </div>
+
+    <!-- Slide 9: Part 4 - Core -->
+    <div class="slide slide-content" data-index="9">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="file-text"></i></div>
+          <h3>企業選人的邏輯</h3>
+        </div>
+        <div class="slide-body">
+          <div class="info-box centered">
+            <p>履歷、面試、回家作業這三個環節<br>全部都圍繞同一件事：<span class="accent-text">讓資方判斷你能帶來多少價值。</span></p>
+          </div>
+          <ul class="slide-list">
+            <li>企業選人 = 選誰<span class="highlight-text">看起來最有可能</span>帶來需要的價值，且在預算內。</li>
+            <li>怎麼呈現自己本身就是一種能力。<br>市場不會自動幫你總結你的價值，你得自己翻譯。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Part 4 - Before / After -->
+    <div class="slide slide-content" data-index="10">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="arrow-right-left"></i></div>
+          <h3>不要只列任務，要讓人看到價值</h3>
+        </div>
+        <div class="slide-body">
+          <div class="compare-row">
+            <div class="compare-card bad">
+              <span class="badge bad"><i data-lucide="x" width="16" height="16"></i> 一般講法</span>
+              <p>「我用 PyTorch 建了一個推薦模型，做了特徵工程，上線了。」</p>
+              <span class="sub-text">→ 面試官只知道你會寫模型。</span>
+            </div>
+            <div class="compare-card good">
+              <span class="badge good"><i data-lucide="check" width="16" height="16"></i> 更好的講法</span>
+              <p>「推薦系統 CTR 上不去，我分析數據後發現冷啟動問題。重新設計特徵組合，CTR 提升 15%。」</p>
+              <span class="sub-text">→ 展現你能找問題、解決問題、並拿得出結果。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Part 4 - Junior vs Senior -->
+    <div class="slide slide-content" data-index="11">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="bar-chart-2"></i></div>
+          <h3>Junior vs Senior 呈現重點</h3>
+        </div>
+        <div class="slide-body">
+          <div class="compare-row">
+            <div class="compare-card primary">
+              <span class="badge primary"><i data-lucide="user" width="16" height="16"></i> Junior</span>
+              <p><strong>市場重視：穩定產出與上手速度</strong></p>
+              <span class="sub-text">「在什麼都不確定的情況下，我多快上手了、且穩定產出了什麼。」</span>
+            </div>
+            <div class="compare-card warn">
+              <span class="badge warn"><i data-lucide="user-check" width="16" height="16"></i> Senior</span>
+              <p><strong>市場重視：方案周全度與風險防範</strong></p>
+              <span class="sub-text">「交給我的事，我能給套經過完整思考的方案，不會出包。」</span>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="icon-col"><i data-lucide="pen-tool"></i></div>
+            <div class="text-col">
+              <div class="tip-label">回家作業不是做白工</div>
+              <p>如果你沒有大公司的明確背書，作業反而是直接展示能力的舞台。<br><strong>我面試 104 做了一份花 10 小時的提案，坦白最沒把握的部分，反而拿到 offer。</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Part 5 Section -->
+    <div class="slide slide-section" data-index="12">
+      <div class="icon"><i data-lucide="timer" width="40" height="40"></i></div>
+      <div class="part-label">Part 5</div>
+      <h2>求職節奏：保持活躍、不要玻璃心</h2>
+    </div>
+
+    <!-- Slide 13: Part 5 Content A -->
+    <div class="slide slide-content" data-index="13">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="target"></i></div>
+          <h3>窗口期與活躍度</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li>目標公司<span class="highlight-text">不是隨時在找人，他們有窗口期。</span><br>你必須在那個窗口出現在他們的視線裡。</li>
+            <li>不要吊死在一兩棵樹上。部分符合就值得投，擴大你的池子。</li>
+            <li>每兩三天重新儲存一次 104 履歷，順便看新職缺。<br>讓自己持續出現在企業搜索範圍裡。</li>
+          </ul>
+          <div class="quote-card">
+            <p>「沒有 100% 契合的公司，就像沒有 100% 契合的另一半。」</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Part 5 Content B -->
+    <div class="slide slide-content" data-index="14">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="brain"></i></div>
+          <h3>感性跟理性要分開</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li>面試後的等待 = 企業內部的正常運作時間。</li>
+            <li>真實情況：<span class="accent-text">keyman 出國暫停、處長調職缺收回、甚至有空降人選。</span></li>
+            <li>就算沒後續，可能只是有人更便宜或拼圖更適合，不是你不夠好。</li>
+          </ul>
+          <div class="info-box centered">
+            <p>不要讓感性的焦慮<br>影響你對自己能力與表現的真實判斷。</p>
+          </div>
+          <div class="tip-card">
+            <div class="icon-col"><i data-lucide="bar-chart-2"></i></div>
+            <div class="text-col">
+              <div class="tip-label">客觀判斷標準</div>
+              <p>面了很多家反饋都不好 → <strong>真的需要調整策略。</strong><br>只面了一兩家就覺得完蛋 → <strong>那不叫結論，叫樣本數不夠。</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Part 6 Section -->
+    <div class="slide slide-section" data-index="15">
+      <div class="icon"><i data-lucide="circle-dollar-sign" width="40" height="40"></i></div>
+      <div class="part-label">Part 6</div>
+      <h2>薪資 — 怎麼問？</h2>
+    </div>
+
+    <!-- Slide 16: Part 6 Content -->
+    <div class="slide slide-content" data-index="16">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="wallet"></i></div>
+          <h3>面試中的薪資判斷</h3>
+        </div>
+        <div class="slide-body">
+          <div class="quote-card">
+            <p>「也想了解一下，這個職缺預算大概在什麼區間？<br>我這次期望待遇是 X 到 X 萬，想先確認有沒有在範圍內。」</p>
+            <div class="attribution">— HR 電話初篩快結束時，自然地探底。</div>
+          </div>
+          <ul class="slide-list">
+            <li>看 offer 要看整包（底薪以外的獎金跟分潤），不要只看月薪。</li>
+            <li>想知道公司有沒有預算，可以去查財報跟公司的獲利新聞。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Part 7 Section -->
+    <div class="slide slide-section" data-index="17">
+      <div class="icon"><i data-lucide="message-square" width="40" height="40"></i></div>
+      <div class="part-label">Part 7</div>
+      <h2>面試實戰</h2>
+    </div>
+
+    <!-- Slide 18: Part 7 - HR -->
+    <div class="slide slide-content" data-index="18">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="shield-check"></i></div>
+          <h3>HR 關：核心是排雷</h3>
+        </div>
+        <div class="slide-body">
+          <div class="info-box centered" style="padding: 24px;">
+            <p>最經典的坑：<span class="highlight-text">「你為什麼離開前東家？」</span></p>
+          </div>
+          <div class="compare-row">
+            <div class="compare-card bad">
+              <span class="badge bad"><i data-lucide="thumbs-down" width="16" height="16"></i> 抱怨版</span>
+              <p>「前公司主管聽不進技術風險，組織變動後一團亂。」</p>
+            </div>
+            <div class="compare-card good">
+              <span class="badge good"><i data-lucide="thumbs-up" width="16" height="16"></i> 正向版</span>
+              <p>「我希望找一個大家可以一起面對問題、討論怎麼解決的環境，而不是假裝問題不存在。」</p>
+            </div>
+          </div>
+          <ul class="slide-list" style="margin-top: 10px;">
+            <li>同一件事，把負面抱怨轉成正向追求，對方的聽感完全不同。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 19: Part 7 - Manager -->
+    <div class="slide slide-content" data-index="19">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="briefcase"></i></div>
+          <h3>主管關：讓對方感覺你能扛事</h3>
+        </div>
+        <div class="slide-body">
+          <div class="quote-card">
+            <p>「專案型的人不會一直想『為什麼要做』，但做產品的人會。」</p>
+            <div class="attribution">— 大數據 CTO（習慣在面試中高壓追問，測試你能不能站穩想法）</div>
+          </div>
+          <ul class="slide-list">
+            <li>這句不只適用 PM。工程師如果能在面試中展現有思考過需求合理性，主管對你的信任感會全然不同。</li>
+            <li>面試最加分的真的不是答得最漂亮，而是讓人感覺<span class="accent-text">「這個人可以信任」</span>。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 20: Part 7 - Tips -->
+    <div class="slide slide-content" data-index="20">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="zap"></i></div>
+          <h3>面試實戰小技巧</h3>
+        </div>
+        <div class="slide-body">
+          <div class="tip-card">
+            <div class="icon-col"><i data-lucide="crosshair"></i></div>
+            <div class="text-col">
+              <div class="tip-label">主動出擊：借力對方產品</div>
+              <p>先看對方 JD 跟產品，面試中主動提：<br>
+                <strong>「我有看到你們的產品，我們是不是也會遇到 XX 問題？」</strong><br>
+                假借請教之名，拿出自己準備好的解法。若沒實際做過，可以說「有想法但開發排程還沒處理」。
+              </p>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="icon-col"><i data-lucide="pause-circle"></i></div>
+            <div class="text-col">
+              <div class="tip-label">拖延戰術：爭取思考時間</div>
+              <p>突然被問僵、還沒想到怎麼回答時，不要急著沉默死鎖。先重複問題：<br>
+                <strong>「你的意思是在問 OOOO，對嗎？」</strong><br>
+                不僅是釐清題意，更是在幫大腦爭取寶貴的運轉時間。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 21: Part 8 Section -->
+    <div class="slide slide-section" data-index="21">
+      <div class="icon"><i data-lucide="bot" width="40" height="40"></i></div>
+      <div class="part-label">Part 8</div>
+      <h2>AI 就是你的求職小叮噹</h2>
+    </div>
+
+    <!-- Slide 22: Part 8 - Prep -->
+    <div class="slide slide-content" data-index="22">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="edit-3"></i></div>
+          <h3>面試前準備：結構化與猜題</h3>
+        </div>
+        <div class="slide-body">
+          <div class="flow-row">
+            <div class="flow-item">任務對話<br>紀錄</div>
+            <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+            <div class="flow-item">AI 摘要<br>文件</div>
+            <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+            <div class="flow-item">丟進<br>NotebookLM</div>
+            <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+            <div class="flow-item">產出講<br>稿草稿</div>
+            <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+            <div class="flow-item">IDE 產生<br>面試簡報</div>
+          </div>
+          <div class="info-box centered">
+            <p><strong>AI 猜題策略</strong><br>
+              請 AI 基於 JD 與公司背景深度研究，延伸猜測面試題。<br>
+              <span
+                style="font-size: 1.1rem; color: var(--text-dim); margin-top: 8px; display: block;">我本人就靠這招，精準惡補了對方在意的特定技術跟領域知識。</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 23: Part 8 - Practice -->
+    <div class="slide slide-content" data-index="23">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="repeat"></i></div>
+          <h3>大腦肌肉記憶：練習的迭代</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li><strong>自我介紹很廢 ≠ 你這個人很廢。就像騎腳踏車，一開始不順就練。</strong></li>
+            <li>前幾場面試花時間練，後面面試大家問的都差不多，大腦會自己記住這套應答肌肉記憶，不再需要緊繃。</li>
+          </ul>
+          <div class="flow-row" style="margin-top: 10px;">
+            <div class="flow-item">自己<br>錄音</div>
+            <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+            <div class="flow-item">轉逐<br>字稿</div>
+            <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+            <div class="flow-item">AI 分析<br>抓冗言</div>
+            <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+            <div class="flow-item">修改<br>講稿</div>
+            <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+            <div class="flow-item">再練<br>一次</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 24: Part 8 - Review -->
+    <div class="slide slide-content" data-index="24">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="search"></i></div>
+          <h3>面試後復盤：用數據代替感覺</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li><strong>每次面試務必錄音：</strong>進對方公司前就開，避免手忙腳亂。</li>
+            <li>面試結束後，轉出逐字稿，整段貼給 AI 做客觀分析。</li>
+          </ul>
+          <div class="tip-card">
+            <div class="icon-col"><i data-lucide="sparkles"></i></div>
+            <div class="text-col">
+              <div class="tip-label">私心推薦 Claude</div>
+              <p>像一個精闢直接的中肯理工腦朋友。不會過度悲觀增加焦慮，也不會過度樂觀讓你盲目。<br><strong>幫你分清楚：哪些是你真的要改的？哪些只是你在亂想？</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 25: Part 9 Section -->
+    <div class="slide slide-section" data-index="25">
+      <div class="icon"><i data-lucide="flag" width="40" height="40"></i></div>
+      <div class="part-label">Part 9</div>
+      <h2>判斷好感度、經營備胎與收手</h2>
+    </div>
+
+    <!-- Slide 26: Part 9 - Interest -->
+    <div class="slide slide-content" data-index="26">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="handshake"></i></div>
+          <h3>判斷好感度與應對策略</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li><strong>看主管直接反應：</strong>用人主管若當場表態「這關過了 / 個人有認可」，這種話是真的。就算最後還是沒拿 offer，以此建立自信就值得。</li>
+            <li><strong>如何婉拒並留下餘地？使用「真誠 + 稱讚 + 可惜」：</strong></li>
+          </ul>
+          <div class="quote-card" style="margin-top: 10px;">
+            <p>「您好，很開心有機會交流，也很認同您的產品思維與策略。在完整評估後，由於 104 提供滿足期待的 offer，故需要取消後續的面試。很可惜這次在較晚的時間接觸到裕富，希望未來還有機會合作。」</p>
+          </div>
+          <ul class="slide-list" style="margin-top: 10px;">
+            <li>維持良好關係：萬一你的新 offer 耍雷，可以舊情復燃。這是經營人脈。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 27: Part 9 - When to stop -->
+    <div class="slide slide-content" data-index="27">
+      <div class="content-wrapper">
+        <div class="slide-header">
+          <div class="icon-wrap"><i data-lucide="check-circle-2"></i></div>
+          <h3>什麼時候該收手？</h3>
+        </div>
+        <div class="slide-body">
+          <ul class="slide-list">
+            <li>條件合理 + 對職涯有利 + 沒有強烈不想去。<br>這種時候，<strong>收斂戰線就是成熟</strong>，不是保守。</li>
+          </ul>
+          <div class="info-box centered" style="margin-top: 20px;">
+            <p>核心決策問題：<br>「不是那家有沒有機會用我，<br>而是<span class="highlight-text">『就算用了我，值不值得我放掉手上這個確定機會？』</span>」</p>
+          </div>
+          <ul class="slide-list" style="margin-top: 20px;">
+            <li>流程慢、等不到 keyman、給不出明確數字的公司，通常不值得你放掉。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 28: Closing -->
+    <div class="slide slide-section" data-index="28">
+      <div class="icon"><i data-lucide="star" width="40" height="40"></i></div>
+      <h2 style="font-size: 2.4rem; line-height: 1.5;">
+        求職不是在證明自己完美<br>
+        而是在找到一個<br>
+        <span
+          style="background: linear-gradient(135deg, var(--title-accent-1), var(--title-accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          我已經足夠好、市場也願意買單的下一步
+        </span>
+      </h2>
+      <p style="margin-top: 32px; font-size: 1.2rem; color: var(--text-secondary);">
+        有時候真正成熟的，不是拿到更多<br>而是知道什麼時候已經夠好了
+      </p>
+      <div class="speaker-badge" style="margin-top: 40px;">
+        <span class="name">Anna</span> · 感謝聆聽 🙏
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-bar">
+    <span class="page-num" id="pageNum">1 / 29</span>
+    <div class="nav-buttons">
+      <button class="nav-btn" onclick="prevSlide()">←</button>
+      <button class="nav-btn" onclick="nextSlide()">→</button>
+    </div>
+  </div>
+
+  <script>
+    // 啟動 Lucide Icons
+    lucide.createIcons();
+
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    const progress = document.getElementById('progress');
+    const pageNum = document.getElementById('pageNum');
+
+    function updateSlide(direction) {
+      slides.forEach((s, i) => {
+        s.classList.remove('active', 'exit-left');
+        if (i < current) s.classList.add('exit-left');
+      });
+      slides[current].classList.add('active');
+      progress.style.width = ((current / (total - 1)) * 100) + '%';
+      pageNum.textContent = (current + 1) + ' / ' + total;
+    }
+
+    function nextSlide() {
+      if (current < total - 1) { current++; updateSlide('next'); }
+    }
+
+    function prevSlide() {
+      if (current > 0) { current--; updateSlide('prev'); }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+      if (e.key === 'Home') { current = 0; updateSlide(); }
+      if (e.key === 'End') { current = total - 1; updateSlide(); }
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+    });
+
+    updateSlide();
+  </script>
+
+</body>
+
+</html>
